@@ -16,5 +16,5 @@ class ConfigReader():
     def get_key_with_all_hosts(self):
         all_data = []
         for api_name in self.get_all_names():
-            all_data.append((self.get_email(api_name), self.get_key(api_name), self.get_hosts()))
+            all_data.append((self.get_email(api_name), self.get_key(api_name), self.get_hosts(api_name)))
         return all_data
