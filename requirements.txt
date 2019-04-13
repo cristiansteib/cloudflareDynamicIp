@@ -1,1 +1,2 @@
 cloudflareapi @ git+git://github.com/cristiansteib/cloudflareapi.git@master#egg=cloudflareapi
+requests==2.21.0

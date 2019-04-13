@@ -4,7 +4,7 @@ with open('README.md', 'r') as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name='cloudflare-dynamic-ip',
+    name='cloudflare_dynamic_ip',
     version='0.0.1',
     author='Cristian Steib',
     author_email='cristiansteib@gmail.com',
