@@ -1,0 +1,13 @@
+[Unit]
+Description=Cloudflare Dynamic Ip
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/cloudflare-dynamic-ip
+Environment="PATH=/opt/cloudflare-dynamic-ip/bin:/usr/bin"
+ExecStart=/opt/cloudflare-dynamic-ip/bin/python /opt/cloudflare-dynamic-ip/service.py
+
+[Install]
+WantedBy=multi-user.target
