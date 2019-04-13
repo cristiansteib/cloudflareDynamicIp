@@ -13,7 +13,7 @@ setuptools.setup(
     long_description_content_type='text/markdown',
     url='',
     package_data={'resources': ['*', '**/*', '**/**/*']},
-    install_requires=[],
+    install_requires=open('requirements.txt').read().splitlines(),
     classifiers=[
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3.6',
