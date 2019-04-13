@@ -1,9 +1,0 @@
-Package: cloudflare-dynamic-ip
-Version: 0.0.1
-Architecture: amd64
-Maintainer: Cristian Steib <cristiansteib@gmail.com>
-Installed-Size: 17519
-Depends: libc6 (>= 2.25), libexpat1 (>= 2.1~beta3), zlib1g (>= 1:1.2.0), python3 (>= 3.5), python3-dev, systemd
-Section: devel
-Priority: optional
-Description: Cloudflare automatization service
