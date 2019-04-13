@@ -5,7 +5,7 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
     name='cloudflare-dynamic-ip',
-    version='0.7.4',
+    version='0.0.1',
     author='Cristian Steib',
     author_email='cristiansteib@gmail.com',
     description='Service to auto update ip in cloudflare',
