@@ -1,9 +1,11 @@
-from cloudflareapi import cloudflare
 import requests
-from config import ConfigReader
+from pathlib import Path
 import logging
 
-LOG_FILE = '/var/log/cloudflare_dynamic_ip.log'
+from cloudflareapi import cloudflare
+from config import ConfigReader
+import args
+
 
 def get_public_ip():
     url = "http://jsonip.com"
@@ -16,22 +18,39 @@ def set_ip(ip, auth_key: str, auth_email: str, urls: list):
     easy = cloudflare.EasyUpdate(cloudflare_api)
     for url in urls:
         x = easy.update_dns_ip(dns_name=url, newIP=ip)
-        print(url, ' ', x['value'].text)
+        logging.info(url + ' ' + x['value'].text)
+
+
+def set_ip_dry_run(ip, auth_key: str, auth_email: str, urls: list):
+    for url in urls:
+        print("Using email {0}, set ip {1} for host {2}".format(auth_email, ip, url))
 
 
 def get_last_ip():
     pass
 
 
-def run():
+def run(config, dry_run=False):
     current_ip = get_public_ip()
     if current_ip is not get_last_ip():
-        all_hosts_data = ConfigReader().get_key_with_all_hosts()
+        logging.info("Ip change " + current_ip)
+        all_hosts_data = config.get_key_with_all_hosts()
         for auth_key, auth_email, urls in all_hosts_data:
-            set_ip(current_ip, auth_key, auth_email, urls)
+            if not dry_run:
+                set_ip(current_ip, auth_key, auth_email, urls)
+            else:
+                set_ip_dry_run(current_ip, auth_key, auth_email, urls)
 
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        filename=LOG_FILE, filemode='w', format='%(asctime)s - %(message)s', level=logging.INFO)
-    run()
+    args = args.parse_args()
+    config = ConfigReader(str(Path(args.config_directory)))
+
+    if args.dry_run is False:
+        log_dir = str(Path(args.log_directory) / 'cloudflare_dynamic_ip.log')
+        logging.basicConfig(
+            filename=log_dir,
+            filemode='w',
+            format='%(asctime)s - %(message)s', level=logging.INFO)
+    run(config, dry_run=args.dry_run)
+

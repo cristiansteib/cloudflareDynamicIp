@@ -1,4 +1,6 @@
 class ConfigReader():
+    def __init__(self, path):
+        pass
 
     def get_hosts(self, api_key_name):
         # search all the hosts for that api name

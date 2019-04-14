@@ -1,0 +1,25 @@
+#!/bin/bash -eu
+
+declare -r DH_VERBOSE=
+
+function create_log_dir {
+    mkdir -p /var/log/cloudflare_dynamic_ip
+    chown www-data:www-data -R /var/log/cloudflare_dynamic_ip
+}
+
+
+case "$1" in
+  configure)
+      create_log_dir
+  ;;
+
+  abort-upgrade|abort-remove|abort-deconfigure)
+    echo "postinst not doing anything for \`$1'" >&2
+  ;;
+
+  *)
+    echo "postinst called with unknown argument \`$1'" >&2
+  ;;
+esac
+
+#DEBHELPER#
