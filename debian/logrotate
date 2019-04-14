@@ -1,0 +1,8 @@
+/var/log/cloudflare_dynamic_ip/*.log {
+   rotate 4
+   missingok
+   notifempty
+   weekly
+   compress
+   delaycompress
+}

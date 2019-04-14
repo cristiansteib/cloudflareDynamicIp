@@ -4,7 +4,7 @@ declare -r DH_VERBOSE=
 
 function create_log_dir {
     mkdir -p /var/log/cloudflare_dynamic_ip
-    chown www-data:www-data -R /var/log/cloudflare_dynamic_ip
+    chown www-data:www-data /var/log/cloudflare_dynamic_ip
 }
 
 
