@@ -28,10 +28,14 @@ def set_ip(ip, auth_key: str, auth_email: str, dns_type, urls: list):
 
 def set_ip_dry_run(ip, auth_key: str, auth_email: str, dns_type, urls: list):
     for url in urls:
-        print("Using email {0} to change record '{1}' to {2} for host {3}".format(auth_email,dns_type, ip, url))
+        print("Using email {0} to change record '{1}' to {2} for host {3}".format(auth_email, dns_type, ip, url))
 
 
 def get_last_ip():
+    pass
+
+
+def _save_new_ip(ip):
     pass
 
 
@@ -45,6 +49,7 @@ def run(config, dry_run=False):
                 set_ip(current_ip, auth_key, auth_email, dns_type, hosts)
             else:
                 set_ip_dry_run(current_ip, auth_key, auth_email, dns_type, hosts)
+        _save_new_ip(current_ip)
 
 
 if __name__ == "__main__":
