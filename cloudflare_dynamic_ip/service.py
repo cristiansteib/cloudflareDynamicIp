@@ -14,11 +14,11 @@ def get_public_ip():
     return response.json()['ip']
 
 
-def set_ip(ip, auth_key: str, auth_email: str, urls: list):
+def set_ip(ip, auth_key: str, auth_email: str, dns_type, urls: list):
     cloudflare_api = cloudflare.CloudFlareApi(auth_key, auth_email)
     easy = cloudflare.EasyUpdate(cloudflare_api)
     for url in urls:
-        x = easy.update_dns_ip(dns_name=url, newIP=ip)
+        x = easy.update_dns_ip(dns_name=url, newIP=ip, dns_type=dns_type)
         try:
             state = 'success' if x['value'].json()['result']['content'] == ip else 'FAILED'
             logging.info(state + ' change for ' + url)
@@ -26,9 +26,9 @@ def set_ip(ip, auth_key: str, auth_email: str, urls: list):
             logging.critical('FAIL change for ' + url + ' using token ' + auth_key)
 
 
-def set_ip_dry_run(ip, auth_key: str, auth_email: str, urls: list):
+def set_ip_dry_run(ip, auth_key: str, auth_email: str, dns_type, urls: list):
     for url in urls:
-        print("Using email {0} to set IP {1} for host {2}".format(auth_email, ip, url))
+        print("Using email {0} to change record '{1}' to {2} for host {3}".format(auth_email,dns_type, ip, url))
 
 
 def get_last_ip():
@@ -40,11 +40,11 @@ def run(config, dry_run=False):
     if current_ip is not get_last_ip():
         logging.info("Ip change " + current_ip)
         all_hosts_data = config.get_token_with_all_hosts()
-        for auth_email, auth_key , urls in all_hosts_data:
+        for auth_email, auth_key, dns_type, hosts in all_hosts_data:
             if not dry_run:
-                set_ip(current_ip, auth_key, auth_email, urls)
+                set_ip(current_ip, auth_key, auth_email, dns_type, hosts)
             else:
-                set_ip_dry_run(current_ip, auth_key, auth_email, urls)
+                set_ip_dry_run(current_ip, auth_key, auth_email, dns_type, hosts)
 
 
 if __name__ == "__main__":
