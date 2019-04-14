@@ -1,17 +1,19 @@
-import requests
 from pathlib import Path
 import logging
 import time
+import json
 
 from cloudflareapi import cloudflare
 from config import ConfigReader
 import args
+import http.client
 
 
 def get_public_ip():
-    url = "http://jsonip.com"
-    response = requests.request(method='GET', url=url)
-    return response.json()['ip']
+    conn = http.client.HTTPSConnection("www.jsonip.com")
+    conn.request('GET', '/')
+    response = conn.getresponse().read()
+    return json.loads(response)['ip']
 
 
 def set_ip(ip, auth_key: str, auth_email: str, dns_type, urls: list):
@@ -67,3 +69,4 @@ if __name__ == "__main__":
         if not args.demonize:
             break
         time.sleep(10)
+
