@@ -1,22 +1,48 @@
-class ConfigReader():
+try:
+    import ConfigParser as configparser
+except ImportError:
+    import configparser
+
+from pathlib import Path
+
+
+class ConfigReader:
     def __init__(self, path):
-        pass
+        self.data = self._get_data(path)
 
-    def get_hosts(self, api_key_name):
-        # search all the hosts for that api name
-        pass
+    @staticmethod
+    def _get_data(path):
+        data = dict()
 
-    def get_all_names(self):
-        return []
+        setting_tokens = configparser.ConfigParser()
+        setting_tokens.read(Path(path) / 'tokens.conf')
+        setting_hosts = configparser.ConfigParser()
+        setting_hosts.read(Path(path) / 'hosts.conf')
 
-    def get_key(self, api_key_name):
-        return ""
+        for token_name in setting_tokens.sections():
+            token = setting_tokens.get(token_name, 'token')
+            email = setting_tokens.get(token_name, 'email')
+            data.setdefault(token_name, {'token': token, 'email': email, 'hosts': []})
 
-    def get_email(self, api_key_name):
-        return ""
+        for host_name in setting_hosts.sections():
+            token_name = setting_hosts.get(host_name, 'token-name')
+            data[token_name]['hosts'].append(setting_hosts.get(host_name, 'host'))
+        return data
 
-    def get_key_with_all_hosts(self):
+    def get_hosts(self, token_name):
+        return self.data[token_name]['hosts']
+
+    def get_all_token_names(self):
+        return self.data.keys()
+
+    def get_token(self, token_name):
+        return self.data[token_name]['token']
+
+    def get_email(self, token_name):
+        return self.data[token_name]['email']
+
+    def get_token_with_all_hosts(self):
         all_data = []
-        for api_name in self.get_all_names():
-            all_data.append((self.get_email(api_name), self.get_key(api_name), self.get_hosts(api_name)))
+        for api_name in self.get_all_token_names():
+            all_data.append((self.get_email(api_name), self.get_token(api_name), self.get_hosts(api_name)))
         return all_data
