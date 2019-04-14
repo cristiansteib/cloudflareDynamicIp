@@ -26,7 +26,7 @@ class ConfigReader:
 
         for host_name in setting_hosts.sections():
             token_name = setting_hosts.get(host_name, 'token-name')
-            data[token_name]['hosts'].append(setting_hosts.get(host_name, 'host'))
+            data[token_name]['hosts'].extend((setting_hosts.get(host_name, 'host').split(',')))
         return data
 
     def get_hosts(self, token_name):
