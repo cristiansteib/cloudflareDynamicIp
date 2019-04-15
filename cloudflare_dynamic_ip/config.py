@@ -8,9 +8,8 @@ import logging
 
 
 class ConfigReader:
-    def __init__(self, logger, path):
+    def __init__(self, path):
         self.data = self._get_data(path)
-        self.logger = logger
 
     @staticmethod
     def _get_data(path):
