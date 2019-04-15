@@ -14,22 +14,26 @@ fileCache = FileCache()  # Cache the ip in the ram to avoid IO
 
 
 def get_public_ip():
-    conn = http.client.HTTPSConnection("www.jsonip.com")
-    conn.request('GET', '/')
-    response = conn.getresponse().read()
-    return json.loads(response)['ip']
+    try:
+        conn = http.client.HTTPSConnection("www.jsonip.com")
+        conn.request('GET', '/')
+        response = conn.getresponse().read()
+        return json.loads(response.decode())['ip']
+    except OSError:
+        logging.error("Error on gathering public ip ")
+        exit(2)
 
 
 def set_ip(ip, auth_key: str, auth_email: str, dns_type, urls: list):
     cloudflare_api = cloudflare.CloudFlareApi(auth_key, auth_email)
     easy = cloudflare.EasyUpdate(cloudflare_api)
     for url in urls:
-        x = easy.update_dns_ip(dns_name=url, newIP=ip, dns_type=dns_type)
         try:
+            x = easy.update_dns_ip(dns_name=url, newIP=ip, dns_type=dns_type)
             state = 'Success' if x['value'].json()['result']['content'] == ip else 'FAILED'
             logging.info(state + ' change for record "{0}" on {1}'.format(dns_type, url))
         except:
-            logging.critical(
+            logging.error(
                 'FAILED to change IP for record "{0}" on {1} using token {2}'.format(dns_type, url, auth_key))
 
 
@@ -49,7 +53,7 @@ def save_new_ip(ip):
 def run(config, dry_run=False):
     current_ip = get_public_ip()
     if current_ip != get_last_ip():
-        logging.info("Ip change to " + current_ip)
+        logging.info("New ip" + current_ip)
         all_hosts_data = config.get_token_with_all_hosts()
         for auth_email, auth_key, dns_type, hosts in all_hosts_data:
             if not dry_run:
@@ -61,7 +65,13 @@ def run(config, dry_run=False):
 
 if __name__ == "__main__":
     args = args.parse_args()
-    config = ConfigReader(str(Path(args.config_directory)))
+
+    config = ConfigReader(str(Path(args.config_directory)), args.test)
+
+    if args.test:
+        # only run for test the config
+        print("Config is ok")
+        exit(0)
 
     if args.dry_run is False:
         log_dir = str(Path(args.log_directory) / 'cloudflare_dynamic_ip.log')
