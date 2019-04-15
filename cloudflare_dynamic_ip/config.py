@@ -4,11 +4,13 @@ except ImportError:
     import configparser
 
 from pathlib import Path
+import logging
 
 
 class ConfigReader:
-    def __init__(self, path):
+    def __init__(self, logger, path):
         self.data = self._get_data(path)
+        self.logger = logger
 
     @staticmethod
     def _get_data(path):
@@ -33,11 +35,16 @@ class ConfigReader:
                             })
 
         for host_name in setting_hosts.sections():
-            token_name = setting_hosts.get(host_name, 'token-name')
-            data[token_name]['dns']['hosts'].extend((setting_hosts.get(host_name, 'host').split(',')))
-            data[token_name]['dns']['type'] = setting_hosts.get(host_name, 'type')
-
+            try:
+                token_name = setting_hosts.get(host_name, 'token-name')
+                data[token_name]['dns']['hosts'].extend((setting_hosts.get(host_name, 'host').split(',')))
+                data[token_name]['dns']['type'] = setting_hosts.get(host_name, 'type')
+            except KeyError:
+                logging.ERROR("Bad config, missing some key? ", exc_info=True)
+            except:
+                logging.CRITICAL("Error parsing config", exc_info=True)
         return data
+
 
     def get_hosts(self, token_name):
         return self.data[token_name]['dns']['hosts']

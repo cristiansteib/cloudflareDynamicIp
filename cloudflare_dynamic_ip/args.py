@@ -37,7 +37,7 @@ def parse_args():
         "--dry-run",
         action="store_true",
         default=False,
-        help=""
+        help="Dry run, show what is going to do but don't make any changes"
     )
 
     parser.add_argument(
