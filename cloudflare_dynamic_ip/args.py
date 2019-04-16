@@ -1,7 +1,7 @@
 from argparse import ArgumentParser
 import sys
 
-APP_NAME = 'cloudflare_dynamic_ip'
+APP_NAME = 'cloudflare-dynamic-ip'
 
 
 def parse_args():
@@ -64,7 +64,3 @@ def parse_args():
 
 
     return parser.parse_args()
-
-def test_config(*args, **kwargs):
-    print("lala")
-    exit(0)

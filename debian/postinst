@@ -4,12 +4,12 @@ declare -r DH_VERBOSE=
 
 function create_log_dir {
     mkdir -p /var/log/cloudflare-dynamic-ip
-    chmod 777 /var/log/cloudflare-dynamic-ip
+    chmod 777 /var/log/cloudflare-dynamic-ip -R
     chown www-data:www-data /var/log/cloudflare-dynamic-ip
 
 
     mkdir -p /opt/cloudflare-dynamic-ip/storage
-    chmod 777 /opt/cloudflare-dynamic-ip/storage
+    chmod 777 /opt/cloudflare-dynamic-ip/storage -R
     chown www-data:www-data /opt/cloudflare-dynamic-ip/storage
 }
 

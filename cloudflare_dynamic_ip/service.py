@@ -4,12 +4,12 @@ import time
 import json
 import os
 from cloudflareapi import cloudflare
-from config import ConfigReader
-from filecache import FileCache
-import args
+from cloudflare_dynamic_ip.config import ConfigReader
+from cloudflare_dynamic_ip.filecache import FileCache
+from cloudflare_dynamic_ip import args
 import http.client
 
-FILE_TO_STORAGE_IP = '/opt/cloudflare-dynamic-ip/storage/IP'
+FILE_TO_STORAGE_IP = '/opt/cloudflare-dynamic-ip/storage/IP' #FIXME: el problema esta cuando se corre mientras se desarrolla
 fileCache = FileCache()  # Cache the ip in the ram to avoid IO
 
 
@@ -43,11 +43,11 @@ def set_ip_dry_run(ip, auth_key: str, auth_email: str, dns_type, urls: list):
 
 
 def get_last_ip():
-    return fileCache.get('IP')
+    return fileCache.get(FILE_TO_STORAGE_IP)
 
 
 def save_new_ip(ip):
-    fileCache.set('IP', ip)
+    fileCache.set(FILE_TO_STORAGE_IP, ip)
 
 
 def run(config, dry_run=False):

@@ -59,11 +59,14 @@ class ConfigReader:
 
                 try:
                     data[token_name]['dns']['hosts'].extend((setting_hosts.get(host_name, 'host').split(',')))
-                except:
+                except KeyError:
                     print("File: " + path_hosts_conf)
                     print('Token "{0}" in the section "{1}" does not exists'.format(token_name, host_name))
                     exit(2)
-
+                except:
+                    print("File: " + path_hosts_conf)
+                    print(sys.exc_info()[1])
+                    exit(2)
                 data[token_name]['dns']['type'] = setting_hosts.get(host_name, 'type')
             except:
                 print(sys.exc_info()[1])
