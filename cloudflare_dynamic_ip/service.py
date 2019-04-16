@@ -62,8 +62,7 @@ def run(config, dry_run=False):
                 set_ip_dry_run(current_ip, auth_key, auth_email, dns_type, hosts)
         save_new_ip(current_ip)
 
-
-if __name__ == "__main__":
+def main():
     args = args.parse_args()
 
     config = ConfigReader(str(Path(args.config_directory)), args.test)
@@ -84,3 +83,7 @@ if __name__ == "__main__":
         if not args.demonize:
             break
         time.sleep(10)
+
+
+if __name__ == "__main__":
+    main()

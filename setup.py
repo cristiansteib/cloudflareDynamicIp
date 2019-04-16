@@ -14,6 +14,10 @@ setuptools.setup(
     url='',
     package_data={'resources': ['*', '**/*', '**/**/*']},
     install_requires=open('requirements.txt').read().splitlines(),
+    entry_points={
+        'console_scripts': [
+            'cloudflare-dynamic-ip = cloudflare_dynamic_ip.service:main']
+    },
     classifiers=[
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3.6',
