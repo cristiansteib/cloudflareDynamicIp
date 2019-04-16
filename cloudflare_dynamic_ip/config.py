@@ -14,7 +14,6 @@ class ConfigReader:
         self.testing_mode = testing_mode
         self.data = self._get_data(path)
 
-
     def _assert_config_file_exists(self, file_path):
         if not os.path.isfile(file_path):
             if self.testing_mode:

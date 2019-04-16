@@ -1,11 +1,11 @@
-import setuptools
+from setuptools import setup, find_packages
 
 with open('README.md', 'r') as fh:
     long_description = fh.read()
 
-setuptools.setup(
+setup(
     name='cloudflare_dynamic_ip',
-    version='0.0.1',
+    version='0.0.3',
     author='Cristian Steib',
     author_email='cristiansteib@gmail.com',
     description='Service to auto update ip in cloudflare',
@@ -18,6 +18,7 @@ setuptools.setup(
         'console_scripts': [
             'cloudflare-dynamic-ip = cloudflare_dynamic_ip.service:main']
     },
+    packages=find_packages(),
     classifiers=[
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3.6',

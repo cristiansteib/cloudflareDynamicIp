@@ -1,5 +1,18 @@
-cloudflare-dynamic-ip (0.0.1) UNRELEASED; urgency=low
+cloudflare-dynamic-ip (0.0.3) UNRELEASED; urgency=medium
+
+  * config test
+
+ -- cristian <cristian@cristian-desktop>  Sun, 14 Apr 2019 22:53:18 -0300
+
+cloudflare-dynamic-ip (0.0.3ubuntu1) UNRELEASED; urgency=low
+
+  * Fix config
+
+ -- cristian <cristian@cristian-desktop>  Sun, 14 Apr 2019 22:53:04 -0300
+
+cloudflare-dynamic-ip (0.0.2) UNRELEASED; urgency=low
 
   * Initial release.
+  * 
 
- -- cristian <cristian@cristian-desktop>  Fri, 12 Apr 2019 20:58:56 -0300
+ -- cristian <cristian@cristian-desktop>  Sun, 14 Apr 2019 22:50:08 -0300

@@ -7,7 +7,7 @@ User=www-data
 Group=www-data
 WorkingDirectory=/opt/cloudflare-dynamic-ip
 Environment="PATH=/opt/cloudflare-dynamic-ip/bin:/usr/bin"
-ExecStart=/opt/cloudflare-dynamic-ip/bin/python /opt/cloudflare-dynamic-ip/service.py --demonize
+ExecStart=/opt/cloudflare-dynamic-ip/bin/cloudflare-dynamic-ip --demonize
 Restart=always
 RestartSec=30
 

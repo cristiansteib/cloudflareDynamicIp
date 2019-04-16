@@ -9,7 +9,7 @@ from filecache import FileCache
 import args
 import http.client
 
-FILE_TO_STORAGE_IP = 'IP'
+FILE_TO_STORAGE_IP = '/opt/cloudflare-dynamic-ip/storage/IP'
 fileCache = FileCache()  # Cache the ip in the ram to avoid IO
 
 
@@ -53,7 +53,7 @@ def save_new_ip(ip):
 def run(config, dry_run=False):
     current_ip = get_public_ip()
     if current_ip != get_last_ip():
-        logging.info("New ip" + current_ip)
+        logging.info("New ip " + current_ip)
         all_hosts_data = config.get_token_with_all_hosts()
         for auth_email, auth_key, dns_type, hosts in all_hosts_data:
             if not dry_run:
@@ -62,25 +62,26 @@ def run(config, dry_run=False):
                 set_ip_dry_run(current_ip, auth_key, auth_email, dns_type, hosts)
         save_new_ip(current_ip)
 
+
 def main():
-    args = args.parse_args()
+    arguments = args.parse_args()
 
-    config = ConfigReader(str(Path(args.config_directory)), args.test)
+    config = ConfigReader(str(Path(arguments.config_directory)), arguments.test)
 
-    if args.test:
+    if arguments.test:
         # only run for test the config
         print("Config is ok")
         exit(0)
 
-    if args.dry_run is False:
-        log_dir = str(Path(args.log_directory) / 'cloudflare_dynamic_ip.log')
+    if arguments.dry_run is False:
+        log_dir = str(Path(arguments.log_directory) / 'cloudflare_dynamic_ip.log')
         logging.basicConfig(
             filename=log_dir,
             format='[%(levelname)s] %(asctime)s - %(message)s', level=logging.INFO, datefmt='%d-%m-%y %H:%M:%S')
 
     while True:
-        run(config, dry_run=args.dry_run)
-        if not args.demonize:
+        run(config, dry_run=arguments.dry_run)
+        if not arguments.demonize:
             break
         time.sleep(10)
 

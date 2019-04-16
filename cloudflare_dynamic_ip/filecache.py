@@ -22,7 +22,7 @@ class FileCache:
 
     def set(self, key, value):
         old_value = self._data.get(key, None)
-        if old_value is not None and old_value != value:
+        if old_value != value:
             self._data[key] = str(value).strip()
             self._save_value_on_disk(key, self._data[key])
 
